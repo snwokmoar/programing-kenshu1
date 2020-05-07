@@ -4,7 +4,7 @@ namespace Exchange
     //メインメニュー
     static class MainMenu
     {
-        public static void show(params Currency[] Currencies)
+        public static void Show(params Currency[] Currencies)
         {
             bool loop = true;
             while (loop)
@@ -21,24 +21,27 @@ namespace Exchange
 
                 var input = Console.ReadLine();
                 int number;
+
+                //入力値が整数値でない場合エラー
                 if (!int.TryParse(input, out number))
                 {
-                    ErrorMessage.show();
+                    ErrorMessage.Show();
                     continue;
                 }
 
                 switch (number)
                 {
                     case 1:
-                        RegistrationMenu.show(Currencies);
+                        RegistrationMenu.Show(Currencies);
                         continue;
                     case 2:
-                        ExchangeMenu.show(Currencies);
+                        ExchangeMenu.Show(Currencies);
                         continue;
                     case 3:
                         return;
                 }
-                ErrorMessage.show();
+                //どのケースにも当てはまらない場合、エラーを返す。
+                ErrorMessage.Show();
             }
         }
     }
