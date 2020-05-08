@@ -20,15 +20,15 @@ namespace Exchange
                 Console.WriteLine($"{Currencies.Length + 1}. メインメニューに戻る");
                 Console.WriteLine();
                 Console.Write("登録したい通貨を入力してください(数値):");
-
+                　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
                 //入力
                 var input = Console.ReadLine();
-                int number;
+                int number;//わかりやすい名前に、何番目の通貨か？
 
                 //入力値が整数値でない場合エラー
                 if (!int.TryParse(input, out number))
                 {
-                    ErrorMessage.Show();
+                    ErrorMessage.Show();//エラーの表記変える
                     continue;
                 }
 
@@ -44,7 +44,7 @@ namespace Exchange
                     //メニューにない番号を選んでいないかチェック
                     try
                     {
-                        Console.Write($"レート{Currencies[number - 1].NameOfCurrency}/JPYを入力してください:");
+                        Console.Write($"レート{Currencies[number - 1].NameOfCurrency}/JPYを入力してください:");　//難しく書きすぎ素直に
                     }
                     catch (IndexOutOfRangeException)
                     {
@@ -59,7 +59,7 @@ namespace Exchange
                     //入力が数値でない場合エラー
                     if (!double.TryParse(input, out rate))
                     {
-                        ErrorMessage.Show();
+                        ErrorMessage.Show();//素直に書くcw使う
                         continue;
                     }
 
@@ -70,7 +70,6 @@ namespace Exchange
                     Console.ReadLine();
                     break;
                 }
-
             }
         }
     }

@@ -2,12 +2,17 @@
 namespace Exchange
 {
     //メインメニュー
-    static class MainMenu
+    class MainMenu : IMenu
     {
-        public static void Show(params Currency[] Currencies)
+        void IMenu.Show()
+        {
+            Show();
+        }
+
+        public static void Show()
         {
             bool loop = true;
-            while (loop)
+            while (loop)   //true
             {
                 Console.Clear();
                 Console.WriteLine("通貨換算アプリケーション");
