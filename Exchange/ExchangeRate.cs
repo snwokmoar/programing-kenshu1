@@ -1,9 +1,9 @@
 ﻿using System;
 namespace Exchange
 {
-    class ExchangeRate
+    public class ExchangeRate
     {
-        public double Rate { set; get; } = 0;
+        public double? Rate { set; get; } = null;
         public string NumeratorOfRate { get; }
         public string DenominatorOfRate { get; }
 

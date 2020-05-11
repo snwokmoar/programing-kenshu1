@@ -3,6 +3,6 @@ namespace Exchange
 {
     public interface IMenu
     {
-        void Show();
+        void Show(params ExchangeRate[] ListOfRate);
     }
 }

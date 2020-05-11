@@ -7,7 +7,12 @@ namespace Exchange
     {
         static void Main(string[] args)
         {
-            MainMenu.Show();
+            var USD_JPY = new ExchangeRate("USD", "JPY");
+            var EUR_JPY = new ExchangeRate("EUR", "JPY");
+            var GBP_JPY = new ExchangeRate("GBP", "JPY");
+
+            var MainMenu = new MainMenu();
+            MainMenu.Show(USD_JPY, EUR_JPY, GBP_JPY);
         }
     }
 }

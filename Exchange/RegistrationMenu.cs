@@ -1,75 +1,140 @@
 ﻿using System;
 namespace Exchange
-{
-    //為替レート登録画面
-    static class RegistrationMenu
+{ 
+    class RegistrationMenu : IMenu
     {
-        public static void Show(params Currency[] Currencies)
+        //為替レート登録画面
+        public void Show(params ExchangeRate[] ListOfRate)
         {
-            bool loop = true;
-            while (loop)
+            while(true)
             {
                 Console.Clear();
                 Console.WriteLine("通貨換算アプリケーション");
+                Console.WriteLine();
                 Console.WriteLine("為替レート登録画面");
                 //扱う通貨を順に表示
-                for (int i = 0; i < Currencies.Length; i++)
+                int count = 1;
+                foreach (ExchangeRate rate in ListOfRate)
                 {
-                    Console.WriteLine($"{i + 1}. {Currencies[i].NameOfCurrency}/JPY");
+                    Console.WriteLine($"{count}. {rate.NumeratorOfRate}/{rate.DenominatorOfRate}");
+                    ++count;
                 }
-                Console.WriteLine($"{Currencies.Length + 1}. メインメニューに戻る");
+                Console.WriteLine($"{count}. メインメニューに戻る");
                 Console.WriteLine();
-                Console.Write("登録したい通貨を入力してください(数値):");
+                Console.Write("登録したい通貨の番号を入力してください:");
                 　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
                 //入力
                 var input = Console.ReadLine();
-                int number;//わかりやすい名前に、何番目の通貨か？
+                int selectNumber;
 
                 //入力値が整数値でない場合エラー
-                if (!int.TryParse(input, out number))
+                if (!int.TryParse(input, out selectNumber))
                 {
-                    ErrorMessage.Show();//エラーの表記変える
+                    Console.WriteLine($"入力が整数値ではありません。入力値: {input}");
+                    Console.Write("Enterで戻る");
+                    Console.ReadLine();
                     continue;
                 }
 
                 //メインメニューに戻る
-                if (number == Currencies.Length + 1)
+                if (selectNumber == count)
                 {
-                    break;
+                    return;
                 }
 
-                //通貨登録
-                while (loop)
+                //選んだ番号が選択肢にあるかチェック
+                if (0 < selectNumber || selectNumber < count)
                 {
-                    //メニューにない番号を選んでいないかチェック
-                    try
-                    {
-                        Console.Write($"レート{Currencies[number - 1].NameOfCurrency}/JPYを入力してください:");　//難しく書きすぎ素直に
-                    }
-                    catch (IndexOutOfRangeException)
-                    {
-                        ErrorMessage.Show();
-                        break;
-                    }
-
-                    //入力
-                    input = Console.ReadLine();
-                    double rate;
-
-                    //入力が数値でない場合エラー
-                    if (!double.TryParse(input, out rate))
-                    {
-                        ErrorMessage.Show();//素直に書くcw使う
-                        continue;
-                    }
-
-                    Currencies[number - 1].ExchangeRate = rate;
-                    Console.WriteLine();
-                    Console.WriteLine($"登録レート: {Currencies[number - 1].ExchangeRate} {Currencies[number - 1].NameOfCurrency}/JPY");
+                    Registration(ListOfRate[--selectNumber]);
+                }
+                else
+                {
+                    Console.WriteLine($"入力はメニューの選択肢にありません。入力値: {selectNumber}");
                     Console.Write("Enterで戻る");
                     Console.ReadLine();
-                    break;
+                    continue;
                 }
+
+                while (true)
+                {
+                    Console.WriteLine();
+                    Console.Write("続けてレートを登録しますか? [y:n]:");
+
+                    input = Console.ReadLine();
+
+                    if (input == "y")
+                    {
+                        break;
+                    }
+                    else if (input == "n")
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"'y'か'n'を入力してください。入力値: {input}");
+                    }
+                }
+            }
+        }
+
+        //レート登録用関数
+        public static void Registration(ExchangeRate x)
+        {
+            //通貨登録
+            while (true)
+            {
+                Console.Write($"レート{x.NumeratorOfRate}/{x.DenominatorOfRate}を入力してください(空欄のままEnterで登録せずに戻る):"); 
+             
+                //入力
+                var input = Console.ReadLine();
+
+                //入力が空欄のとき戻る
+                if (input == "")
+                {
+                    return;
+                }
+
+                double rate;
+
+                //入力が数値でない場合エラー
+                if (!double.TryParse(input, out rate))
+                {
+                    Console.WriteLine($"入力値は数値ではありません。入力値: {input}");
+                    Console.Write("Enterで戻る");
+                    Console.ReadLine();
+                    continue;
+                }
+
+                //既にレートが登録されている場合に上書きして良いか確認する
+                if (x.Rate != null)
+                {
+                    while (true)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine($"既にレートが登録されていますが上書きしますか? [y:n]");
+                        Console.Write($"(既に登録されているレート {x.Rate} {x.NumeratorOfRate}/{x.DenominatorOfRate}):");
+
+                        input = Console.ReadLine();
+                        if (input == "y")
+                        {
+                            break;
+                        }
+                        else if (input == "n")
+                        {
+                            return;
+                        }
+                        else
+                        {
+                            Console.WriteLine($"'y'か'n'を入力してください。入力値: {input}");
+                        }
+                    }
+                }
+
+                x.Rate = rate;
+                Console.WriteLine();
+                Console.WriteLine($"登録レート: {x.Rate} {x.NumeratorOfRate}/{x.DenominatorOfRate}");
+                break;
             }
         }
     }
