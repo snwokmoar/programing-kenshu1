@@ -45,7 +45,7 @@ namespace Exchange
         }
 
 
-        //アプリケーション終了用関数
+        //アプリケーション終了用
         private class ExitApplication : IMenu
         {
             public void Show(params ExchangeRate[] ListOfRate)

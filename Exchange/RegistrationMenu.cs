@@ -37,11 +37,8 @@ namespace Exchange
                 }
 
                 //メインメニューに戻る
-                if (selectNumber == count)
-                {
-                    return;
-                }
-
+                if (selectNumber == count) return;
+             
                 //選んだ番号が選択肢にあるかチェック
                 if (0 < selectNumber || selectNumber < count)
                 {
@@ -55,28 +52,14 @@ namespace Exchange
                     continue;
                 }
 
-                while (true)
-                {
-                    Console.WriteLine();
-                    Console.Write("続けてレートを登録しますか? [y:n]:");
-
-                    input = Console.ReadLine();
-
-                    if (input == "y")
-                    {
-                        break;
-                    }
-                    else if (input == "n")
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        Console.WriteLine($"'y'か'n'を入力してください。入力値: {input}");
-                    }
-                }
+                //レート登録を続けるか
+                if (ContinueYesOrNo()) continue; else break;
             }
         }
+
+
+
+
 
         //レート登録用関数
         public static void Registration(ExchangeRate x)
@@ -90,10 +73,7 @@ namespace Exchange
                 var input = Console.ReadLine();
 
                 //入力が空欄のとき戻る
-                if (input == "")
-                {
-                    return;
-                }
+                if (input == "") return;
 
                 double rate;
 
@@ -107,34 +87,70 @@ namespace Exchange
                 }
 
                 //既にレートが登録されている場合に上書きして良いか確認する
-                if (x.Rate != null)
-                {
-                    while (true)
-                    {
-                        Console.WriteLine();
-                        Console.WriteLine($"既にレートが登録されていますが上書きしますか? [y:n]");
-                        Console.Write($"(既に登録されているレート {x.Rate} {x.NumeratorOfRate}/{x.DenominatorOfRate}):");
-
-                        input = Console.ReadLine();
-                        if (input == "y")
-                        {
-                            break;
-                        }
-                        else if (input == "n")
-                        {
-                            return;
-                        }
-                        else
-                        {
-                            Console.WriteLine($"'y'か'n'を入力してください。入力値: {input}");
-                        }
-                    }
-                }
+                if (x.Rate != null && !RateOverWriteYesOrNo(x)) break;
 
                 x.Rate = rate;
                 Console.WriteLine();
                 Console.WriteLine($"登録レート: {x.Rate} {x.NumeratorOfRate}/{x.DenominatorOfRate}");
                 break;
+            }
+        }
+
+
+
+
+
+        //レート登録を続けるか判定用関数
+        private static bool ContinueYesOrNo()
+        {
+            while (true)
+            {
+                Console.WriteLine();
+                Console.Write("続けてレートを登録しますか? [y:n]:");
+
+                var input = Console.ReadLine();
+
+                if (input == "y")
+                {
+                    return true;
+                }
+                else if (input == "n")
+                {
+                    return false;
+                }
+                else
+                {
+                    Console.WriteLine($"'y'か'n'を入力してください。入力値: {input}");
+                }
+            }
+        }
+
+
+
+
+
+        //レートの上書きをするかどうか判定する関数
+        private static bool RateOverWriteYesOrNo(ExchangeRate x)
+        {
+            while (true)
+            {
+                Console.WriteLine();
+                Console.WriteLine($"既にレートが登録されていますが上書きしますか? [y:n]");
+                Console.Write($"(既に登録されているレート {x.Rate} {x.NumeratorOfRate}/{x.DenominatorOfRate}):");
+
+                var input = Console.ReadLine();
+                if (input == "y")
+                {
+                    return true;
+                }
+                else if (input == "n")
+                {
+                    return false;
+                }
+                else
+                {
+                    Console.WriteLine($"'y'か'n'を入力してください。入力値: {input}");
+                }
             }
         }
     }

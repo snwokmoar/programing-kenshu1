@@ -4,6 +4,7 @@ namespace Exchange
     //通貨換算画面
     class ExchangeMenu : IMenu
     {
+
         public void Show(params ExchangeRate[] ListOfRate)
         {
             bool loop = true;
@@ -38,10 +39,7 @@ namespace Exchange
                 }
 
                 //メインメニューに戻る
-                if (selectNumber == count)
-                {
-                    return;
-                }
+                if (selectNumber == count) return;
 
                 //選択した番号がメニューの選択肢にあるかチェック
                 if (0 < selectNumber || selectNumber < count)
@@ -59,6 +57,8 @@ namespace Exchange
         }
 
 
+
+
         //通貨換算用関数
         private void ExchangeMoney(ExchangeRate x)
         {
@@ -66,29 +66,9 @@ namespace Exchange
             Console.WriteLine($"{x.NumeratorOfRate}に換算");
 
             //レートを登録していない通貨を選択した場合、警告を表示 (初期登録レート null)
-            if (x.Rate == null)
-            {
-                while (true)
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("##警告## 選択した通貨の換算レートが登録されていません。");
-                    Console.Write("レートを登録しますか？[y:n]:");
-                    var input = Console.ReadLine();
-                    if (input == "y")
-                    {
-                        RegistrationMenu.Registration(x);
-                        break;
-                    }
-                    else if (input == "n")
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        Console.WriteLine($"'y'か'n'を入力してください。入力値: {input}");
-                    }
-                }
-            }
+            if (x.Rate == null) RateNullWarning(x);
+            //警告後、レートを登録していない場合は通貨選択画面に戻る
+            if (x.Rate == null) return;
 
             //通貨換算
             while (true)
@@ -118,6 +98,21 @@ namespace Exchange
                 Console.WriteLine($"{inputAmount} {x.DenominatorOfRate}は {x.Rate * inputAmount} {x.NumeratorOfRate} " +
                                   $"(換算レート {x.Rate} {x.NumeratorOfRate}/{x.DenominatorOfRate})");
             }
+        }
+
+
+
+
+
+        //レートが登録されていない時の警告用関数
+        private void RateNullWarning(ExchangeRate x)
+        {
+            Console.WriteLine();
+            Console.WriteLine("##警告## 選択した通貨の換算レートが登録されていません。");
+            Console.WriteLine("レートを登録してください。");
+            Console.WriteLine();
+
+            RegistrationMenu.Registration(x);
         }
     }
 }
